@@ -18,6 +18,7 @@ import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations.CollapsedCCProcess
 import edu.stanford.nlp.semgraph.SemanticGraphEdge;
 import edu.stanford.nlp.util.CoreMap;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class NLPCoreExtractor {
     
     private final StanfordCoreNLP pipeline;
     private static NLPCoreExtractor nlpExtractor = null;
+    private final static String outputFilePath = "D:\\project\\FinalReport\\";
 
     
     private NLPCoreExtractor() {
@@ -89,13 +91,16 @@ public class NLPCoreExtractor {
                                 + nmod + (nmod.isEmpty()? "": " ") + acl + (acl.isEmpty()? "": " ") + aclDobj;
                         System.out.println("Sentence:" + fs);
                         if(!fs.trim().isEmpty()) {
-                            fSentences.add(fs.trim());
+                            fSentences.add("[1034], " + fs.trim());
                         }
                         mark = aux = auxpass = dobj = nsubj = nmod = acl = case1 = det = amod = advmod = compound = "";
                     }
-                    nsubj = edge.getTarget().word().trim();
-                    verb = edge.getSource().word().trim();
-                    bnsubj = true;
+                    if(getThePOS(sentence, edge.getSource().word().trim()).contains("V")) {
+                        nsubj = edge.getTarget().word().trim();
+                        verb = edge.getSource().word().trim();
+                        bnsubj = true;
+                    }
+                    
                     break;
                 case "conj":
                     if(bnsubj) {
@@ -123,7 +128,7 @@ public class NLPCoreExtractor {
                                 + acl + (acl.isEmpty()? "": " ") + aclDobj;
                         System.out.println("Sentence:" + fs);
                         if(!fs.trim().isEmpty()) {
-                            fSentences.add(fs.trim());
+                            fSentences.add("[1034], " + fs.trim());
                         }
                         verb = edge.getTarget().word().trim();
                         mark = aux = auxpass = dobj = nsubj = nmod = acl = case1 = det = amod = advmod = compound = "";
@@ -154,10 +159,21 @@ public class NLPCoreExtractor {
                                 + nmod + (nmod.isEmpty()? "": " ") + acl + (acl.isEmpty()? "": " ") + aclDobj;
                         System.out.println("Sentence:" + fs);
                         if(!fs.trim().isEmpty()) {
-                            fSentences.add(fs.trim());
+                            fSentences.add("[1034], " + fs.trim());
                         }
                         verb = edge.getTarget().word().trim();
                         mark = aux = auxpass = dobj = nmod = acl = case1 = det = amod = advmod = compound = "";
+                    } else if(getThePOS(sentence, edge.getSource().word().trim()).equalsIgnoreCase("VB")  
+                                && getThePOS(sentence, edge.getTarget().word().trim()).equalsIgnoreCase("NN")) {
+                        fs = nsubj +  (nsubj.isEmpty()? "": " ") + verb +  (verb.isEmpty()? "": " ") + dobj + (dobj.isEmpty()? "": " ") 
+                                + nmod + (nmod.isEmpty()? "": " ") + acl + (acl.isEmpty()? "": " ") + aclDobj;
+                        System.out.println("Sentence:" + fs);
+                        if(!fs.trim().isEmpty()) {
+                            fSentences.add("[1034], " + fs.trim());
+                        }
+                        verb = edge.getSource().word().trim();
+                        dobj = edge.getTarget().word().trim();
+                        mark = aux = auxpass = nmod = acl = case1 = det = amod = advmod = compound = "";
                     }
                     break;
                 case "dobj":
@@ -198,11 +214,17 @@ public class NLPCoreExtractor {
 //                    det =  edge.getTarget().word().trim();
                     break;
                 case "advmod":
-                    advmod = (getThePOS(sentence, edge.getTarget().word().trim()).equalsIgnoreCase("WRB") 
-                            || getThePOS(sentence, edge.getTarget().word().trim()).equalsIgnoreCase("RB"))? "" : edge.getTarget().word().trim();
+                    advmod = ((getThePOS(sentence, edge.getTarget().word().trim()).equalsIgnoreCase("WRB") 
+                            || getThePOS(sentence, edge.getTarget().word().trim()).equalsIgnoreCase("RB"))
+                            && !edge.getTarget().word().trim().equalsIgnoreCase("then")
+                            )? edge.getTarget().word().trim() : "";
                     break;
                 case "amod":
-                    amod =  getThePOS(sentence, edge.getTarget().word().trim()).equalsIgnoreCase("VBG")? "" : edge.getTarget().word().trim();
+                    amod =  ((getThePOS(sentence, edge.getTarget().word().trim()).equalsIgnoreCase("VBG") 
+                            || getThePOS(sentence, edge.getTarget().word().trim()).equalsIgnoreCase("VBN")
+                            || getThePOS(sentence, edge.getTarget().word().trim()).equalsIgnoreCase("JJ")) 
+                            && !edge.getTarget().word().trim().equalsIgnoreCase("following")
+                            )? edge.getTarget().word().trim() : "";
                     break;
                 case "nmod":
                     nmod = edge.getTarget().word().trim();
@@ -260,7 +282,7 @@ public class NLPCoreExtractor {
                 + nmod + (nmod.isEmpty()? "": " ") + acl + (acl.isEmpty()? "": " ") + aclDobj;
         System.out.println("Sentence:" + fs);
         if(!fs.trim().isEmpty()) {
-            fSentences.add(fs.trim());
+            fSentences.add("[1034], " + fs.trim());
         }
     }
     
@@ -278,7 +300,10 @@ public class NLPCoreExtractor {
     }
     
     public void writeSentenceToFile(String filePath, List<String> sentences) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+        File newF = new File(outputFilePath + filePath);
+        //newF.mkdirs();
+        newF.createNewFile();
+        BufferedWriter writer = new BufferedWriter(new FileWriter(newF));
         String strToFile = "" ;
         for(String sentence : sentences) {
             strToFile += sentence + "\n";

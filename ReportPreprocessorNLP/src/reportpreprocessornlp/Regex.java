@@ -22,12 +22,12 @@ public class Regex {
     public static final String endOfLineMac = ":?(\\s)?(\\\\)";
     public static final String endOfLine = "(?m)^.*$";
     public static final String runKey = "HKEY.*\\\\[Rr]un\\\\.*";
-    public static final String runKeyRText = "add registry entry to the run keys";
+    public static final String runKeyRText = "add registry entry on  runkeys";
     public static final String dllFile = ".*\\.[Dd][Ll][Ll]";
     public static final String dllFileRText = "DLL file";
     public static final String executableFile = ".*\\.[Ee][Xx][Ee]";
     public static final String executableFileRText = "Executable file";
     public static final String service = "HKEY.*\\\\[Ss]ervices?\\\\.*";
-    public static final String serviceRText = "Service Entry";
+    public static final String serviceRText = "Add services on registry";
     
 }

@@ -19,7 +19,8 @@ public class TextPreprocessor {
     
     public String preProcessText(File file) throws FileNotFoundException {
         String text = new Scanner(file).useDelimiter("\\Z").next();
-        return replacePathWithRegex(text);
+        text = replacePathWithRegex(text);
+        return text;
     }
     
     private String addDotAtEndOfLine(String text) {
@@ -50,7 +51,7 @@ public class TextPreprocessor {
         out = p.matcher(out).replaceAll(Regex.serviceRText);
         
         p = Pattern.compile(Regex.registryKeyPath);
-        out = p.matcher(out).replaceAll("registry entries");
+        out = p.matcher(out).replaceAll("Add registry entries");
         
         p = Pattern.compile(Regex.dllFile);
         out = p.matcher(out).replaceAll(Regex.dllFileRText);
@@ -59,10 +60,10 @@ public class TextPreprocessor {
         out = p.matcher(out).replaceAll(Regex.executableFileRText);
         
         p = Pattern.compile(Regex.filePath);
-        out = p.matcher(out).replaceAll("files");
+        out = p.matcher(out).replaceAll("Create files");
         
         p = Pattern.compile(Regex.registryKeyPath);
-        out = p.matcher(out).replaceAll("registry entries");
+        out = p.matcher(out).replaceAll("Add registry entries");
         
         p = Pattern.compile(Regex.url);
         out = p.matcher(out).replaceAll("URL");

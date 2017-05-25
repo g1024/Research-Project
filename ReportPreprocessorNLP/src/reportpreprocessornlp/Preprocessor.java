@@ -27,6 +27,7 @@ public class Preprocessor extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         extractor = NLPCoreExtractor.getInstance();
+        jFileChooser1.setMultiSelectionEnabled(true);
     }
 
     /**
@@ -38,18 +39,9 @@ public class Preprocessor extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextField1 = new javax.swing.JTextField();
         jFileChooser1 = new javax.swing.JFileChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jTextField1.setText("OutFileName");
-        jTextField1.setToolTipText("Output File Name");
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
 
         jFileChooser1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -62,40 +54,33 @@ public class Preprocessor extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jFileChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 474, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23))
+                .addGap(26, 26, 26)
+                .addComponent(jFileChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 607, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(50, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(217, 217, 217)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jFileChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 6, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 11, Short.MAX_VALUE)
+                .addComponent(jFileChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
     private void jFileChooser1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFileChooser1ActionPerformed
         // TODO add your handling code here:
         if(evt.getActionCommand().equals("ApproveSelection")) {
             try {
-                File file = jFileChooser1.getSelectedFile();
-                String finalFileName = (jTextField1.getText().trim() == null || jTextField1.getText().isEmpty()) ? "finalActionFile.txt" : jTextField1.getText().trim();
-                TextPreprocessor txtPreprocessor = new TextPreprocessor();
-                String txt = txtPreprocessor.preProcessText(file);
-                System.out.println(txt);
-                extractor.writeSentenceToFile(finalFileName, extractor.extractActionTreeBasedApproach(txt));
+                File[] files = jFileChooser1.getSelectedFiles();
+                for(int i = 0; i < files.length; i++) {
+                    //String finalFileName = (jTextField1.getText().trim() == null || jTextField1.getText().isEmpty()) ? "finalActionFile.txt" : jTextField1.getText().trim();
+                    TextPreprocessor txtPreprocessor = new TextPreprocessor();
+                    String txt = txtPreprocessor.preProcessText(files[i]);
+                    System.out.println(txt);
+                    extractor.writeSentenceToFile(files[i].getName(), extractor.extractActionTreeBasedApproach(txt));
+                }
+
             } catch (IOException ex) {
                 Logger.getLogger(Preprocessor.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -108,6 +93,5 @@ public class Preprocessor extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFileChooser jFileChooser1;
-    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
