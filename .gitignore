@@ -2,3 +2,4 @@
 ReportPreprocessorNLP/dist/README.TXT
 
 *.properties
+/JWNLSimilarityFinder/nbproject/private/
