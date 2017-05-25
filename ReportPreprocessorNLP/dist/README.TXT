@@ -9,7 +9,7 @@ also adds each of the JAR files to the Class-Path element in the application
 JAR files manifest file (MANIFEST.MF).
 
 To run the project from the command line, go to the dist folder and
-type the following:
+type the following: dsadas
 
 java -jar "ReportPreprocessorNLP.jar" 
 
