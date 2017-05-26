@@ -10,8 +10,8 @@ package reportpreprocessornlp;
  * @author mahmed27
  */
 public class Regex {
-    public static final String filePathMac = "((%([a-zA-Z]+)%)|([a-zA-Z]:))(\\\\\\\\[a-zA-Z0-9_. \\[\\]-]+)+\\\\\\\\?";
-    public static final String filePath = "((%([a-zA-Z]+)%)|([a-zA-Z]:))(\\\\[a-zA-Z0-9_. \\[\\]-]+)+\\\\?";
+    public static final String filePathMac = "([~]|[\\/])?((%([a-zA-Z]+)%)|([a-zA-Z]:)|([a-zA-Z]+))?(\\/[a-zA-Z0-9_. \\[\\]-]+)+\\/?";
+    public static final String filePath = "([~]|[\\/])?((%([a-zA-Z]+)%)|([a-zA-Z]:))(\\\\[a-zA-Z0-9_. \\[\\]-]+)+\\\\?";
     public static final String IP = "([0-9]+\\.)+([0-9]+$)";
     public static final String registryKeyPathMac = "([a-zA-Z _-]+\\\\\\\\)+([a-zA-Z _-]+)"; //$
     public static final String registryKeyPath = "HKEY.*\\\\.*\\\\.*";//"([a-zA-Z _-]+\\\\)+([a-zA-Z _-]+)"; //$

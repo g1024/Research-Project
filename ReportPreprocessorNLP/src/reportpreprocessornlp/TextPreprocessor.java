@@ -39,9 +39,9 @@ public class TextPreprocessor {
         } else {
             this.calculateIOCStatistics(text);
             System.out.println("this.dllfile = " + this.dllfile + " this.exefile" + this.exefile 
-                    + " this.registrykey" + this.registrykey + " this.servicekey" + this.servicekey 
-                    + " this.runkey" + this.runkey + " this.cve" + this.cve + " this.url" + this.url 
-                    + " this.ip" + this.ip + " this.filePath" + this.filePath );
+                    + " this.registrykey = " + this.registrykey + " this.servicekey = " + this.servicekey 
+                    + " this.runkey = " + this.runkey + " this.cve = " + this.cve + " this.url = " + this.url 
+                    + " this.ip = " + this.ip + " this.filePath = " + this.filePath );
         }
         return text;
     }
@@ -109,32 +109,50 @@ public class TextPreprocessor {
     }
     
     public void calculateIOCStatistics(String text) {
-        if(Pattern.matches(Regex.IP, text)) {
+        Pattern p, p1, p2;
+        p = Pattern.compile(Regex.IP);
+        if(p.matcher(text).find()) {
             this.ip++;
         }
-        if(Pattern.matches(Regex.dllFile, text)) {
+        p = Pattern.compile(Regex.dllFile);
+        if(p.matcher(text).find()) {
             this.dllfile++;
         }
-        if(Pattern.matches(Regex.executableFile, text)) {
+        p = Pattern.compile(Regex.executableFile);
+        if(p.matcher(text).find()) {
             this.exefile++;
         }
-        if(Pattern.matches(Regex.runKey, text)) {
+        p = Pattern.compile(Regex.runKey);
+        if(p.matcher(text).find()) {
             this.runkey++;
         }
-        if(Pattern.matches(Regex.service, text)) {
+        p = Pattern.compile(Regex.service);
+        if(p.matcher(text).find()) {
             this.servicekey++;
         }
-        if(Pattern.matches(Regex.registryKeyPath, text)) {
+        p = Pattern.compile(Regex.registryKeyPath);
+        if(p.matcher(text).find()) {
             this.registrykey++;
         }
-        if(Pattern.matches(Regex.filePath, text)) {
+        p = Pattern.compile(Regex.filePath);
+        p1 = Pattern.compile(Regex.filePathMac);
+        if(p.matcher(text).find()) {
+            this.filePath++;
+        } else if(p1.matcher(text).find()) {
             this.filePath++;
         }
-        if(Pattern.matches(Regex.cve, text)) {
+        p = Pattern.compile(Regex.cve);
+        if(p.matcher(text).find()) {
             this.cve++;
         }
-        if(Pattern.matches(Regex.url, text) || Pattern.matches(Regex.urlWithoutwww, text)
-                || Pattern.matches(Regex.urlWithwww, text)) {
+        p = Pattern.compile(Regex.url);
+        p1 = Pattern.compile(Regex.urlWithoutwww);
+        p2 = Pattern.compile(Regex.urlWithwww);
+        if(p.matcher(text).find()) {
+            this.url++;
+        } else if( p1.matcher(text).find()) {
+            this.url++;
+        } else if(p2.matcher(text).find()) {
             this.url++;
         }
     }
