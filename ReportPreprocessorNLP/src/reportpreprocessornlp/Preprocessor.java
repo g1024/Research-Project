@@ -7,9 +7,9 @@ package reportpreprocessornlp;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 /**
@@ -25,9 +25,7 @@ public class Preprocessor extends javax.swing.JFrame {
      */
     public Preprocessor() {
         initComponents();
-        setLocationRelativeTo(null);
-        extractor = NLPCoreExtractor.getInstance();
-        jFileChooser1.setMultiSelectionEnabled(true);
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -39,13 +37,23 @@ public class Preprocessor extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jFileChooser1 = new javax.swing.JFileChooser();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jFileChooser1.addActionListener(new java.awt.event.ActionListener() {
+        jButton1.setText("Calculate IOC Statistics");
+        jButton1.setToolTipText("");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jFileChooser1ActionPerformed(evt);
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Parse Threat Action");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
             }
         });
 
@@ -54,29 +62,67 @@ public class Preprocessor extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(jFileChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 607, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addGap(68, 68, 68)
+                .addComponent(jButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(66, 66, 66))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 11, Short.MAX_VALUE)
-                .addComponent(jFileChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE))
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(172, 172, 172)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(184, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jFileChooser1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFileChooser1ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        if(evt.getActionCommand().equals("ApproveSelection")) {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setMultiSelectionEnabled(true);
+        int result = chooser.showOpenDialog(this);
+        if(result == JFileChooser.APPROVE_OPTION) {
+            JOptionPane.showMessageDialog(this, "Out file is written in the same folder of this application jar1");
             try {
-                File[] files = jFileChooser1.getSelectedFiles();
+                File[] files = chooser.getSelectedFiles();
+                TextPreprocessor txtPreprocessor = new TextPreprocessor();
                 for(int i = 0; i < files.length; i++) {
-                    //String finalFileName = (jTextField1.getText().trim() == null || jTextField1.getText().isEmpty()) ? "finalActionFile.txt" : jTextField1.getText().trim();
-                    TextPreprocessor txtPreprocessor = new TextPreprocessor();
-                    String txt = txtPreprocessor.preProcessText(files[i]);
+                    
+                    String txt = txtPreprocessor.preProcessText(files[i], 2);
+                    System.out.println(txt);
+                    //extractor.writeSentenceToFile(files[i].getName(), extractor.extractActionTreeBasedApproach(txt));
+                }
+
+            } catch (IOException ex) {
+                Logger.getLogger(Preprocessor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            JOptionPane.showMessageDialog(this, "Out file is written in the same folder of this application jar");
+        } else if(result == JFileChooser.CANCEL_OPTION) {
+            //setVisible(false); 
+            //dispose();
+            //chooser.
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        
+        extractor = NLPCoreExtractor.getInstance();
+        JFileChooser chooser = new JFileChooser();
+        chooser.setMultiSelectionEnabled(true);
+        int result = chooser.showOpenDialog(this);
+        if(result == JFileChooser.APPROVE_OPTION) {
+            try {
+                File[] files = chooser.getSelectedFiles();
+                TextPreprocessor txtPreprocessor = new TextPreprocessor();
+                for(int i = 0; i < files.length; i++) {
+                    
+                    String txt = txtPreprocessor.preProcessText(files[i], 1);
                     System.out.println(txt);
                     extractor.writeSentenceToFile(files[i].getName(), extractor.extractActionTreeBasedApproach(txt));
                 }
@@ -85,13 +131,14 @@ public class Preprocessor extends javax.swing.JFrame {
                 Logger.getLogger(Preprocessor.class.getName()).log(Level.SEVERE, null, ex);
             }
             JOptionPane.showMessageDialog(this, "Out file is written in the same folder of this application jar");
-        } else if(evt.getActionCommand().equals("CancelSelection")) {
-            setVisible(false); 
-            dispose();
+        } else if(result == JFileChooser.CANCEL_OPTION) {
+            //setVisible(false); 
+            //dispose();
         }
-    }//GEN-LAST:event_jFileChooser1ActionPerformed
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JFileChooser jFileChooser1;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     // End of variables declaration//GEN-END:variables
 }

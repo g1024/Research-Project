@@ -29,5 +29,6 @@ public class Regex {
     public static final String executableFileRText = "Executable file";
     public static final String service = "HKEY.*\\\\[Ss]ervices?\\\\.*";
     public static final String serviceRText = "Add services on registry";
+    public static final String cve = "^([Cc][Vv][Ee])([-][0-9]{4}){2}";
     
 }

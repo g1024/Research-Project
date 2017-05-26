@@ -7,6 +7,7 @@ package reportpreprocessornlp;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.regex.Pattern;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 import org.xml.sax.SAXException;
@@ -29,6 +30,11 @@ public class ReportPreprocessorNLP {
 //        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 //        extractor.extractActionTreeBasedApproach("The Trojan may arrive on the compromised computer after being downloaded by website."); //When the Trojan is executed, it creates the following file
 //        extractor.preProcessText("dssf [https://]www.amazon.com/Men-War-PC/dp/B001QZGVEC/EsoftTeam/watchc[REMOVED]");
+            if(Pattern.matches(Regex.cve, "CVE-4325-4343 tyrytry")){
+                System.out.println("matched");
+            } else {
+                System.out.println("Not matched");
+            }
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {

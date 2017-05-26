@@ -17,9 +17,32 @@ import java.util.regex.Pattern;
  */
 public class TextPreprocessor {
     
-    public String preProcessText(File file) throws FileNotFoundException {
+    private int dllfile;
+    private int exefile;
+    private int registrykey;
+    private int servicekey;
+    private int runkey;
+    private int cve;
+    private int url;
+    private int ip;
+    private int filePath;
+    
+    public TextPreprocessor() {
+        this.dllfile = this.exefile = this.registrykey = this.servicekey = this.runkey 
+                = this.cve = this.url = this.ip = this.filePath = 0;
+    }
+    
+    public String preProcessText(File file, int buttonNo) throws FileNotFoundException {
         String text = new Scanner(file).useDelimiter("\\Z").next();
-        text = replacePathWithRegex(text);
+        if(buttonNo == 1) {
+            text = replacePathWithRegex(text);
+        } else {
+            this.calculateIOCStatistics(text);
+            System.out.println("this.dllfile = " + this.dllfile + " this.exefile" + this.exefile 
+                    + " this.registrykey" + this.registrykey + " this.servicekey" + this.servicekey 
+                    + " this.runkey" + this.runkey + " this.cve" + this.cve + " this.url" + this.url 
+                    + " this.ip" + this.ip + " this.filePath" + this.filePath );
+        }
         return text;
     }
     
@@ -83,6 +106,37 @@ public class TextPreprocessor {
         
         
         return out;
+    }
+    
+    public void calculateIOCStatistics(String text) {
+        if(Pattern.matches(Regex.IP, text)) {
+            this.ip++;
+        }
+        if(Pattern.matches(Regex.dllFile, text)) {
+            this.dllfile++;
+        }
+        if(Pattern.matches(Regex.executableFile, text)) {
+            this.exefile++;
+        }
+        if(Pattern.matches(Regex.runKey, text)) {
+            this.runkey++;
+        }
+        if(Pattern.matches(Regex.service, text)) {
+            this.servicekey++;
+        }
+        if(Pattern.matches(Regex.registryKeyPath, text)) {
+            this.registrykey++;
+        }
+        if(Pattern.matches(Regex.filePath, text)) {
+            this.filePath++;
+        }
+        if(Pattern.matches(Regex.cve, text)) {
+            this.cve++;
+        }
+        if(Pattern.matches(Regex.url, text) || Pattern.matches(Regex.urlWithoutwww, text)
+                || Pattern.matches(Regex.urlWithwww, text)) {
+            this.url++;
+        }
     }
     
 }
