@@ -5,8 +5,11 @@
  */
 package reportpreprocessornlp;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,6 +29,7 @@ public class TextPreprocessor {
     private int url;
     private int ip;
     private int filePath;
+    private final static String statsfFilePath = "D:\\project\\IOCStats.csv";
     
     public TextPreprocessor() {
         this.dllfile = this.exefile = this.registrykey = this.servicekey = this.runkey 
@@ -38,10 +42,10 @@ public class TextPreprocessor {
             text = replacePathWithRegex(text);
         } else {
             this.calculateIOCStatistics(text);
-            System.out.println("this.dllfile = " + this.dllfile + " this.exefile" + this.exefile 
-                    + " this.registrykey = " + this.registrykey + " this.servicekey = " + this.servicekey 
-                    + " this.runkey = " + this.runkey + " this.cve = " + this.cve + " this.url = " + this.url 
-                    + " this.ip = " + this.ip + " this.filePath = " + this.filePath );
+//            System.out.println("this.dllfile = " + this.dllfile + " this.exefile = " + this.exefile 
+//                    + " this.registrykey = " + this.registrykey + " this.servicekey = " + this.servicekey 
+//                    + " this.runkey = " + this.runkey + " this.cve = " + this.cve + " this.url = " + this.url 
+//                    + " this.ip = " + this.ip + " this.filePath = " + this.filePath );
         }
         return text;
     }
@@ -62,6 +66,8 @@ public class TextPreprocessor {
         }
         return out;
     }
+    
+   
     
     private String replacePathWithRegex(String text) {
         Pattern p = null;
@@ -149,12 +155,34 @@ public class TextPreprocessor {
         p1 = Pattern.compile(Regex.urlWithoutwww);
         p2 = Pattern.compile(Regex.urlWithwww);
         if(p.matcher(text).find()) {
+            //System.out.println("sfdsf#################");
             this.url++;
         } else if( p1.matcher(text).find()) {
-            this.url++;
+            //System.out.println("%%%%");
+            //this.url++;
         } else if(p2.matcher(text).find()) {
+            //System.out.println("$$$$$$");
             this.url++;
         }
+    }
+    
+    public void writeIOCStatsToFile() throws IOException {
+        File newF = new File(statsfFilePath);
+        //newF.mkdirs();
+        newF.createNewFile();
+        BufferedWriter writer = new BufferedWriter(new FileWriter(newF));
+        String strToFile = "" ;
+        strToFile += "CVE," +this.cve + "\n";
+        strToFile += "DllFile," + this.dllfile + "\n";
+        strToFile += "ExeFile," + this.exefile + "\n";
+        strToFile += "FilePath," + this.filePath + "\n";
+        strToFile += "IP," + this.ip + "\n";
+        strToFile += "RegistryKey," + this.registrykey + "\n";
+        strToFile += "RunRegistryKey," + this.runkey + "\n";
+        strToFile += "ServiceRegistryKey," + this.servicekey + "\n";
+        strToFile += "URL," + this.url + "\n";
+        writer.write(strToFile);
+        writer.close();
     }
     
 }

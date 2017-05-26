@@ -73,9 +73,9 @@ public class Preprocessor extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(172, 172, 172)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(184, Short.MAX_VALUE))
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(209, Short.MAX_VALUE))
         );
 
         pack();
@@ -94,9 +94,11 @@ public class Preprocessor extends javax.swing.JFrame {
                 for(int i = 0; i < files.length; i++) {
                     
                     String txt = txtPreprocessor.preProcessText(files[i], 2);
-                    System.out.println(txt);
+                    //System.out.println(txt);
                     //extractor.writeSentenceToFile(files[i].getName(), extractor.extractActionTreeBasedApproach(txt));
+                    
                 }
+                txtPreprocessor.writeIOCStatsToFile();
 
             } catch (IOException ex) {
                 Logger.getLogger(Preprocessor.class.getName()).log(Level.SEVERE, null, ex);

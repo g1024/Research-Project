@@ -12,12 +12,12 @@ package reportpreprocessornlp;
 public class Regex {
     public static final String filePathMac = "([~]|[\\/])?((%([a-zA-Z]+)%)|([a-zA-Z]:)|([a-zA-Z]+))?(\\/[a-zA-Z0-9_. \\[\\]-]+)+\\/?";
     public static final String filePath = "([~]|[\\/])?((%([a-zA-Z]+)%)|([a-zA-Z]:))(\\\\[a-zA-Z0-9_. \\[\\]-]+)+\\\\?";
-    public static final String IP = "([0-9]+\\.)+([0-9]+$)";
+    public static final String IP = "([0-9]+\\.){3}([0-9]+)";
     public static final String registryKeyPathMac = "([a-zA-Z _-]+\\\\\\\\)+([a-zA-Z _-]+)"; //$
     public static final String registryKeyPath = "HKEY.*\\\\.*\\\\.*";//"([a-zA-Z _-]+\\\\)+([a-zA-Z _-]+)"; //$
     public static final String urlWithoutwww = "([a-zA-Z0-9_-]+\\.)+([a-zA-Z0-9._-]+)"; //$
-    public static final String urlWithwww = "(([Ww][Ww][Ww]\\.)([a-zA-Z0-9_-]+\\.)+([a-zA-Z0-9._-]+)(\\/[a-zA-Z0-9._-]+)+\\/?)" ;
-    public static final String url = "(\\[([Hh][Tt][Tt][Pp][Ss]?):\\/\\/\\])(([Ww][Ww][Ww]\\.)([a-zA-Z0-9_-]+\\.)+([a-zA-Z0-9._-]+)(\\/[a-zA-Z0-9._-]+)+\\/?)((\\[[Rr][Ee][Mm][Oo][Vv][Ee][Dd]\\]))?";
+    public static final String urlWithwww = "(([Ww][Ww][Ww]\\.)([a-zA-Z0-9_-]+\\.)+([a-zA-Z0-9._-]+)((\\/[a-zA-Z0-9._-]+)+)?\\/?)" ;
+    public static final String url = "(\\[([Hh][Tt][Tt][Pp][Ss]?):\\/\\/\\])(([Ww][Ww][Ww]\\.)([a-zA-Z0-9_-]+\\.)+([a-zA-Z0-9._-]+)((\\/[a-zA-Z0-9._-]+)+)?\\/?)((\\[[Rr][Ee][Mm][Oo][Vv][Ee][Dd]\\]))?";
     public static final String str = "http";
     public static final String endOfLineMac = ":?(\\s)?(\\\\)";
     public static final String endOfLine = "(?m)^.*$";
@@ -29,6 +29,6 @@ public class Regex {
     public static final String executableFileRText = "Executable file";
     public static final String service = "HKEY.*\\\\[Ss]ervices?\\\\.*";
     public static final String serviceRText = "Add services on registry";
-    public static final String cve = "^([Cc][Vv][Ee])([-][0-9]{4}){2}";
+    public static final String cve = "([Cc][Vv][Ee])([-][0-9]{4}){2}";
     
 }
